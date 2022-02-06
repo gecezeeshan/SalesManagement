@@ -82,8 +82,7 @@ namespace SalesManagement.Controllers
             {
                 return NotFound();
             }
-
-            ViewData["SaleMasterId"] = new SelectList(_context.SaleMaster, "SaleMasterId", "SaleMasterId", saleDetail.SaleMaster.SaleMasterId);
+            ViewData["SaleMasterId"] = new SelectList(_context.SaleMaster, "SaleMasterId", "SaleMasterId", saleDetail.SaleMasterId);
             return View(saleDetail);
         }
 
