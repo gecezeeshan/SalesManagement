@@ -6,22 +6,15 @@
 
 <h1>Create</h1>
 
-<h1>@ViewBag.SaleMasterId  </h1>
-<h1>@ViewData["test1"]</h1>
-
 <h4>SaleDetail</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create" asp-route-id="@ViewBag.SMID">
+        <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group" >
-                <label asp-for="SaleMasterId" class="control-label"></label>
-                <input type="text" asp-for="SaleMasterId" value="@ViewBag.SaleMasterId" />                               
-                
-               <select asp-for="SaleMasterId" class ="form-control" asp-items="ViewBag.SaleMasterId"></select>
-            </div>
+         
             <div class="form-group">
+                 <input type="hidden" asp-for="SaleMasterId" value="@ViewBag.SMID" />
                 <label asp-for="ItemNo" class="control-label"></label>
                 <input asp-for="ItemNo" class="form-control" />
                 <span asp-validation-for="ItemNo" class="text-danger"></span>

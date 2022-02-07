@@ -1,66 +1,52 @@
 ﻿@model IEnumerable<SalesManagement.Models.SaleDetail>
 
-<table class="table">
-    <thead>
-        <tr>
 
-            <th>
-                @Html.DisplayNameFor(model => model.ItemNo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ItemName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.QTY)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Tax)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th><a asp-controller="SaleDetails" asp-action="Create" asp-route-id="@Model.First().SaleMasterId">Add Item</a></th>
-        </tr>
-    </thead>
-    <tbody>
-        @{
-            decimal total = 0;
-        }
-        @foreach (var item in Model)
-        {
-            
-            <tr>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.ItemNo)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ItemName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.QTY)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Tax)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @{
-                        total += ((item.QTY * item.Price) + ((item.QTY * item.Price) * item.Tax) / 100);
-                    }
-                    <form asp-action="DeleteSaleDetail" asp-controller="SaleDetails" asp-route-id="@item.SaleDetailId">
-                        <input type="submit" value="Delete" OnClientClick="return confirm('Do you want to delete?')" class="btn btn-danger" />
-                    </form>
+<div class="mt-3">
+    <div class="table-responsive">
 
-                </td>
-            </tr>
-        }
-        <tr><td>Total</td><td> 
-            <label> @total</label>
-            
-            
-        </td></tr>
-    </tbody>
-</table>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Item Number</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    <th>Tax</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    decimal total = 0;
+                    decimal grandTotal = 0;
+                }
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.ItemNo)</td>
+                        <td>@Html.DisplayFor(modelItem => item.QTY)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Price)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Tax)</td>
+                        <td>
+                            @{
+                                total = ((item.QTY * item.Price) + ((item.QTY * item.Price) * item.Tax) / 100);
+
+                                grandTotal += total;
+                            }
+                            @total
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    <td colspan="3"></td>
+
+
+                    <td>Total</td>
+                    <td>
+                        <label> @grandTotal</label>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
