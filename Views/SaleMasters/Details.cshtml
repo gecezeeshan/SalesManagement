@@ -40,3 +40,11 @@
     <a asp-action="Edit" asp-route-id="@Model.SaleMasterId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+<div>
+    
+@section Scripts {
+    @{await Html.RenderPartialAsync("PTest");}
+
+    @{await Html.RenderPartialAsync("../SaleDetails/test", @Model.SaleDetails);}
+}
+</div>

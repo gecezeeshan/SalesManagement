@@ -20,9 +20,16 @@ namespace SalesManagement.Controllers
         }
 
         // GET: SaleDetails
-        public async Task<IActionResult> Index()
+        //public async Task<IActionResult> Index()
+        //{
+        //    var saleContext = _context.SaleDetail.Include(s => s.SaleMaster);
+        //    return View(await saleContext.ToListAsync());
+        //}
+// GET: SaleDetails
+        public async Task<IActionResult> Index(int? id)
         {
-            var saleContext = _context.SaleDetail.Include(s => s.SaleMaster);
+            var saleContext = _context.SaleDetail.Include(s => s.SaleMaster).Where(a => a.SaleMaster.SaleMasterId == id);
+            
             return View(await saleContext.ToListAsync());
         }
 
@@ -46,8 +53,10 @@ namespace SalesManagement.Controllers
         }
 
         // GET: SaleDetails/Create
-        public IActionResult Create()
+        public IActionResult Create(int? id)
         {
+            ViewBag.SMID = id;
+
             ViewData["SaleMasterId"] = new SelectList(_context.SaleMaster, "SaleMasterId", "SaleMasterId");
             return View();
         }
@@ -57,16 +66,34 @@ namespace SalesManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SaleDetailId,SaleMasterId,ItemNo,ItemName,QTY,Tax,Price")] SaleDetail saleDetail)
+        public async Task<IActionResult> Create(int id, [Bind("SaleDetailId,SaleMasterId,ItemNo,ItemName,QTY,Tax,Price")] SaleDetail saleDetail)
         {
+            var id1 =  ViewBag.SMID;
+            saleDetail.SaleMasterId = id;
             if (ModelState.IsValid)
             {
+               
                 _context.Add(saleDetail);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["SaleMasterId"] = new SelectList(_context.SaleMaster, "SaleMasterId", "SaleMasterId", saleDetail.SaleMasterId);
             return View(saleDetail);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateSaleDetail([Bind("SaleDetailId,SaleMasterId,ItemNo,ItemName,QTY,Tax,Price")] SaleDetail saleDetail)
+        {
+            if (ModelState.IsValid)
+            {
+
+                _context.Add(saleDetail);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            //ViewData["SaleMasterId"] = new SelectList(_context.SaleMaster, "SaleMasterId", "SaleMasterId", saleDetail.SaleMasterId);
+            return RedirectToAction("Details", "SaleMasters", new { id = saleDetail.SaleMasterId });
         }
 
         // GET: SaleDetails/Edit/5
@@ -84,6 +111,21 @@ namespace SalesManagement.Controllers
             }
             ViewData["SaleMasterId"] = new SelectList(_context.SaleMaster, "SaleMasterId", "SaleMasterId", saleDetail.SaleMasterId);
             return View(saleDetail);
+        }// GET: SaleDetails/Edit/5
+        public async Task<IActionResult> EditSaleDetail(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var saleDetail = await _context.SaleDetail.FindAsync(id);
+            if (saleDetail == null)
+            {
+                return NotFound();
+            }
+            //ViewData["SaleMasterId"] = new SelectList(_context.SaleMaster, "SaleMasterId", "SaleMasterId", saleDetail.SaleMasterId);
+            return RedirectToAction("Details", "SaleMasters", new { id = saleDetail.SaleMasterId });
         }
 
         // POST: SaleDetails/Edit/5
@@ -150,6 +192,19 @@ namespace SalesManagement.Controllers
             _context.SaleDetail.Remove(saleDetail);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+
+        [HttpPost, ActionName("DeleteSaleDetail")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteSaleDetail(int id)
+        {
+            var saleDetail = await _context.SaleDetail.FindAsync(id);
+            var masterId = saleDetail.SaleMasterId;
+            _context.SaleDetail.Remove(saleDetail);
+            await _context.SaveChangesAsync();
+            
+            return RedirectToAction("Details", "SaleMasters", new { id =masterId });
         }
 
         private bool SaleDetailExists(int id)

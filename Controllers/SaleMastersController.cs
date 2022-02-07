@@ -22,7 +22,7 @@ namespace SalesManagement.Controllers
         // GET: SaleMasters
         public async Task<IActionResult> Index()
         {
-            return View(await _context.SaleMaster.ToListAsync());
+            return View( await _context.SaleMaster.ToListAsync());
         }
 
         // GET: SaleMasters/Details/5
@@ -35,9 +35,14 @@ namespace SalesManagement.Controllers
 
             var saleMaster = await _context.SaleMaster
                 .FirstOrDefaultAsync(m => m.SaleMasterId == id);
+
             if (saleMaster == null)
             {
                 return NotFound();
+            }
+            else {
+                var details = _context.SaleDetail.Include(s => s.SaleMaster).Where(a => a.SaleMaster.SaleMasterId == id).ToList();
+                saleMaster.SaleDetails = details;
             }
 
             return View(saleMaster);
@@ -142,15 +147,38 @@ namespace SalesManagement.Controllers
             var saleMaster = await _context.SaleMaster.FindAsync(id);
             IEnumerable<SaleDetail> details1 = _context.SaleDetail.Where(a => a.SaleMaster.SaleMasterId == id);
             _context.SaleDetail.RemoveRange(details1);
-           var details = await _context.SaleDetail.ToListAsync();
+            var details = await _context.SaleDetail.ToListAsync();
             _context.SaleMaster.Remove(saleMaster);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
         private bool SaleMasterExists(int id)
         {
             return _context.SaleMaster.Any(e => e.SaleMasterId == id);
         }
+
+        public async Task<IActionResult> CreateSale(int? id)
+        {
+            if (id.HasValue)
+            {
+                var saleMaster = await _context.SaleMaster
+                    .FirstOrDefaultAsync(m => m.SaleMasterId == id);
+                if (saleMaster == null)
+                {
+                    return NotFound();
+                }
+                return View("CreateSale", saleMaster);
+            }
+
+            else { 
+                return View("CreateSale"); 
+            
+            }
+
+
+
+        }
+
+
     }
 }

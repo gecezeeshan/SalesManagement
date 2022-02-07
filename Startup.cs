@@ -29,10 +29,7 @@ namespace SalesManagement
             services.AddDbContext<SaleContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-
-            //ServiceProvider sp = services.BuildServiceProvider();
-            //var myDbContext = sp.GetService<SaleContext>();
-            //DbInitializer.Initialize(myDbContext);
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
         }
 
@@ -68,22 +65,5 @@ namespace SalesManagement
     }
 
 
-    //public static class WebHostExtensions
-    //{
-    //    public static IWebHost MigrateDatabase<T>(this IWebHost webHost) where T : DbContext
-    //    {
-    //        var serviceScopeFactory = (IServiceScopeFactory)webHost
-    //            .Services.GetService(typeof(IServiceScopeFactory));
-
-    //        using (var scope = serviceScopeFactory.CreateScope())
-    //        {
-    //            var services = scope.ServiceProvider;
-
-    //            var dbContext = services.GetRequiredService<T>();
-    //            DbInitializer.Initialize(dbContext);
-    //        }
-
-    //        return webHost;
-    //    }
-    //}
+   
 }
