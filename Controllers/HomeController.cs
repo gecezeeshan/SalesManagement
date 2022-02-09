@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace SalesManagement.Controllers
 {
+    [Route("[controller]/[action]")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -17,12 +18,16 @@ namespace SalesManagement.Controllers
         {
             _logger = logger;
         }
-
+        [Route("~/")]
+        [Route("/Home")]
+        [Route("~/Home/Index")]
         public IActionResult Index()
         {
             return View();
         }
-
+        
+        [Route("/Privacy")]
+        [Route("~/Home/Privacy")]
         public IActionResult Privacy()
         {
             return View();

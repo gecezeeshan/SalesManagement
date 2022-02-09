@@ -35,6 +35,13 @@
                             }
                             @total
                         </td>
+                        <td>
+  
+      <form asp-action="DeleteSaleDetail" asp-controller="SaleDetails"  asp-route-id="@item.SaleDetailId">
+            <a asp-action="Edit" asp-controller="SaleDetails" asp-route-id="@item.SaleDetailId">Edit</a> 
+   <input type="submit" value="Delete" class="btn btn-small" />
+</form>    
+</td>
                     </tr>
                 }
                 <tr>

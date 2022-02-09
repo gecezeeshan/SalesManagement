@@ -14,7 +14,15 @@ namespace SalesManagement.Models
         public decimal Total { get; set; }
         public ICollection<SaleDetail> SaleDetails { get; set; }
     }
-
+ public class SaleMasterReport
+    {
+        public int SaleMasterId { get; set; }
+        public  string Customer { get; set; }
+        public DateTime Date { get; set; }
+        public int Items { get; set; }
+        public decimal Total { get; set; }
+        
+    }
     public class SaleDetail
     {       
         public int SaleDetailId { get; set; }
@@ -27,4 +35,11 @@ namespace SalesManagement.Models
         public decimal Tax { get; set; }
         public decimal Price { get; set; }
     }
-}
+
+
+    public class SaleFilterReport
+    {
+        public DateTime? Date { get; set; }
+
+    }
+    }

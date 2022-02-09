@@ -95,13 +95,12 @@ namespace SalesManagement.Controllers
             {
                 return NotFound();
             }
-            if (id.HasValue)
-            {
-                ViewBag.SMID = id;
-            }
+            
 
 
-            var saleDetail = await _context.SaleDetail.FindAsync(id);
+            var saleDetail = await _context.SaleDetail.FindAsync(id);           
+            ViewBag.SMID = saleDetail.SaleMasterId;
+
             if (saleDetail == null)
             {
                 return NotFound();
@@ -122,11 +121,11 @@ namespace SalesManagement.Controllers
             {
                 return NotFound();
             }
-            if (id.HasValue)
-            {
-                ViewBag.SMID = id;
-            }
-
+            //if (id.HasValue)
+            //{
+            //    ViewBag.SMID = id;
+            //}
+            ViewBag.SMID = saleDetail.SaleMasterId;
             if (ModelState.IsValid)
             {
                 try
@@ -145,10 +144,10 @@ namespace SalesManagement.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Details", "SaleMasters", new { id = id });
+                return RedirectToAction("Details", "SaleMasters", new { id = saleDetail.SaleMasterId });
             }
             ViewData["SaleMasterId"] = new SelectList(_context.SaleMaster, "SaleMasterId", "SaleMasterId", saleDetail.SaleMasterId);
-            return RedirectToAction("Details", "SaleMasters", new { id = id });
+            return RedirectToAction("Details", "SaleMasters", new { id = saleDetail.SaleMasterId });
         }
         // GET: SaleDetails/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -188,7 +187,7 @@ namespace SalesManagement.Controllers
             var masterId = saleDetail.SaleMasterId;
             _context.SaleDetail.Remove(saleDetail);
             await _context.SaveChangesAsync();
-
+            
             return RedirectToAction("Details", "SaleMasters", new { id = masterId });
         }
         private bool SaleDetailExists(int id)

@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:26413/SaleMasters",
+      "applicationUrl": "http://localhost:26413/Home",
       "sslPort": 44338
     }
   },
@@ -18,7 +18,7 @@
     "SalesManagement": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:5001/SaleMasters;http://localhost:5000/SaleMasters",
+      "applicationUrl": "https://localhost:5001/Home;http://localhost:5000/Home",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

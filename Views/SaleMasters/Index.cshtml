@@ -1,12 +1,71 @@
-﻿@model IEnumerable<SalesManagement.Models.SaleMaster>
+﻿@model IEnumerable<SalesManagement.Models.SaleMasterReport>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<p>
-      <a asp-action="CreateSale">Create Sale</a>
-</p>
+<div class="form-group">
+    <form asp-action="Index" asp-route-filterDate="@ViewData["CurrentDate"]">
+        <div class="form-group">
+            <table>
+                <tr>
+                    <td>
+                        <input id="CurrentDate" name="CurrentDate" value="@ViewData["CurrentDate"]" style="width:200px;" class="form-control" />
+                    </td>
+                    <td>
+                        <input type="submit" value="Filter" class="btn btn-primary" />
+
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <br />
+                        <a asp-action="CreateSale">Create Sale</a>
+                    </td>
+                </tr>
+            </table>
+
+
+        </div>
+    </form>
+
+    @*<form asp-action="Index" method="get">
+        <div class="form-actions no-color">
+        <p>
+        Find by name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+        <input type="submit" value="Search" class="btn btn-default" /> |
+        <a asp-action="Index">Back to Full List</a>
+        </p>
+        </div>
+        </form>*@
+
+    @section Scripts {
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <!-- Bootstrap -->
+    <script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/js/bootstrap.min.js'></script>
+    <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/css/bootstrap.min.css'
+          media="screen" />
+    <!-- Bootstrap -->
+    <!-- Bootstrap DatePicker -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js" type="text/javascript"></script>
+    <!-- Bootstrap DatePicker -->
+
+    <script type="text/javascript">
+        $(function () {
+            $('#CurrentDate').datepicker({
+                changeMonth: true,
+                changeYear: true,
+                format: "dd/mm/yyyy",
+                language: "tr"
+            });
+        });
+    </script>
+    }
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -16,7 +75,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Date)
             </th>
-            
+            <th>
+                Total Items
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Total)
             </th>
@@ -24,26 +85,30 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Customer)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-          
-            <td>
-                @Html.DisplayFor(modelItem => item.Total)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.SaleMasterId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.SaleMasterId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.SaleMasterId">Delete</a>  
-                @*<a asp-controller="SaleDetails" asp-action="Create" asp-route-id="@item.SaleMasterId">Add Details</a> |
-                <a asp-controller="SaleDetails" asp-action="" asp-route-id="@item.SaleMasterId">Details</a> *@
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Customer)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Items)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Total)
+                </td>
+
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.SaleMasterId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.SaleMasterId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.SaleMasterId">Delete</a>
+                    @*<a asp-controller="SaleDetails" asp-action="Create" asp-route-id="@item.SaleMasterId">Add Details</a> |
+                        <a asp-controller="SaleDetails" asp-action="" asp-route-id="@item.SaleMasterId">Details</a> *@
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

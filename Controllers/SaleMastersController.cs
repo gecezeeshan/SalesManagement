@@ -18,13 +18,40 @@ namespace SalesManagement.Controllers
         {
             _context = context;
         }
-
+        [Route("~/SaleMaster")]
         // GET: SaleMasters
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(DateTime? CurrentDate)
         {
-            return View( await _context.SaleMaster.ToListAsync());
-        }
 
+            ViewData["CurrentDate"] = "";
+            List<SaleMasterReport> sm = new List<SaleMasterReport>();
+            if (CurrentDate == null)
+            {
+                sm = await _context.GetSalesAsync(null);
+               
+            }
+            else
+            {
+                DateTime date = CurrentDate.Value;
+                sm = await _context.GetSalesAsync(date);
+                ViewData["CurrentDate"] = date.ToString("dd MMM yyyy");
+            }
+           
+            
+            return View("index", sm);
+
+
+
+        }
+        [Route("~/SaleMasters")]
+        public async Task<IActionResult> Filter(DateTime? filterDate)
+        {
+            var sm = await _context.GetSalesAsync(filterDate);
+            ViewBag.CurrentDate = DateTime.Now.ToString("dd-MM-yyyy");
+            return View("index", sm);
+
+        }
+        [Route("~/SaleMasters/Details/")]
         // GET: SaleMasters/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -40,20 +67,22 @@ namespace SalesManagement.Controllers
             {
                 return NotFound();
             }
-            else {
+            else
+            {
                 var details = _context.SaleDetail.Include(s => s.SaleMaster).Where(a => a.SaleMaster.SaleMasterId == id).ToList();
                 saleMaster.SaleDetails = details;
             }
 
             return View(saleMaster);
         }
-
+        [Route("~/SaleMasters/Create")]
         // GET: SaleMasters/Create
         public IActionResult Create()
         {
             return View();
         }
 
+        [Route("~/SaleMasters/Create")]
         // POST: SaleMasters/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -69,7 +98,7 @@ namespace SalesManagement.Controllers
             }
             return View(saleMaster);
         }
-
+        [Route("~/SaleMasters/Edit")]
         // GET: SaleMasters/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -85,6 +114,7 @@ namespace SalesManagement.Controllers
             }
             return View(saleMaster);
         }
+        [Route("~/SaleMasters/Edit")]
 
         // POST: SaleMasters/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -120,7 +150,7 @@ namespace SalesManagement.Controllers
             }
             return View(saleMaster);
         }
-
+        [Route("~/SaleMasters/Delete")]
         // GET: SaleMasters/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -138,7 +168,7 @@ namespace SalesManagement.Controllers
 
             return View(saleMaster);
         }
-
+        [Route("~/SaleMasters/Delete")]
         // POST: SaleMasters/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -147,7 +177,6 @@ namespace SalesManagement.Controllers
             var saleMaster = await _context.SaleMaster.FindAsync(id);
             IEnumerable<SaleDetail> details1 = _context.SaleDetail.Where(a => a.SaleMaster.SaleMasterId == id);
             _context.SaleDetail.RemoveRange(details1);
-            var details = await _context.SaleDetail.ToListAsync();
             _context.SaleMaster.Remove(saleMaster);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -156,7 +185,7 @@ namespace SalesManagement.Controllers
         {
             return _context.SaleMaster.Any(e => e.SaleMasterId == id);
         }
-
+        [Route("~/SaleMasters/CreateSale")]
         public async Task<IActionResult> CreateSale(int? id)
         {
             if (id.HasValue)
@@ -170,9 +199,10 @@ namespace SalesManagement.Controllers
                 return View("CreateSale", saleMaster);
             }
 
-            else { 
-                return View("CreateSale"); 
-            
+            else
+            {
+                return View("CreateSale");
+
             }
 
 
