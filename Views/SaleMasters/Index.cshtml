@@ -10,7 +10,7 @@
             <table>
                 <tr>
                     <td>
-                        <input id="CurrentDate" name="CurrentDate" value="@ViewData["CurrentDate"]" style="width:200px;" class="form-control" />
+                        <input id="CurrentDate" name="CurrentDate" asp-format="{0:dd/MM/yyyy}" value="@ViewData["CurrentDate"]" style="width:200px;" class="form-control" />
                     </td>
                     <td>
                         <input type="submit" value="Filter" class="btn btn-primary" />
@@ -29,15 +29,7 @@
         </div>
     </form>
 
-    @*<form asp-action="Index" method="get">
-        <div class="form-actions no-color">
-        <p>
-        Find by name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
-        <input type="submit" value="Search" class="btn btn-default" /> |
-        <a asp-action="Index">Back to Full List</a>
-        </p>
-        </div>
-        </form>*@
+   
 
     @section Scripts {
     @{
@@ -57,8 +49,8 @@
     <script type="text/javascript">
         $(function () {
             $('#CurrentDate').datepicker({
-                changeMonth: true,
-                changeYear: true,
+                changeMonth: false,
+                changeYear: false,
                 format: "dd/mm/yyyy",
                 language: "tr"
             });
