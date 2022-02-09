@@ -5,12 +5,12 @@
 }
 
 <div class="form-group">
-    <form asp-action="Index" asp-route-filterDate="@ViewData["CurrentDate"]">
+    <form asp-action="Index" asp-route-filterDate="@ViewData["CurrentDate"]" >
         <div class="form-group">
             <table>
                 <tr>
                     <td>
-                        <input id="CurrentDate" name="CurrentDate" asp-format="{0:dd/MM/yyyy}" value="@ViewData["CurrentDate"]" style="width:200px;" class="form-control" />
+                        <input id="CurrentDate" name="CurrentDate" asp-format="{0:yyyyMMdd}" value="@ViewData["CurrentDate"]" style="width:200px;" class="form-control" />
                     </td>
                     <td>
                         <input type="submit" value="Filter" class="btn btn-primary" />

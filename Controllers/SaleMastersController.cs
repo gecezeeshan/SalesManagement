@@ -34,7 +34,7 @@ namespace SalesManagement.Controllers
             {
                 DateTime date = CurrentDate.Value;
                 sm = await _context.GetSalesAsync(date);
-                ViewData["CurrentDate"] = date.ToString("dd/MM/yyyy");
+                ViewData["CurrentDate"] = date.ToString("yyyyMMdd");
             }
            
             
