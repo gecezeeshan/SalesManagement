@@ -13,6 +13,7 @@
                     <th>Price</th>
                     <th>Tax</th>
                     <th>Total</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -39,7 +40,9 @@
   
       <form asp-action="DeleteSaleDetail" asp-controller="SaleDetails"  asp-route-id="@item.SaleDetailId">
             <a asp-action="Edit" asp-controller="SaleDetails" asp-route-id="@item.SaleDetailId">Edit</a> 
-   <input type="submit" value="Delete" class="btn btn-small" />
+            
+        <input type="submit" value="Delete" class="btn btn-link " style="color:red;" onclick="return confirm('Do you want to delete?');" />
+   
 </form>    
 </td>
                     </tr>
@@ -48,10 +51,11 @@
                     <td colspan="3"></td>
 
 
-                    <td>Total</td>
+                    <td><b>Total: </b></td>
                     <td>
-                        <label> @grandTotal</label>
+                        <label><b> @grandTotal</b></label>
                     </td>
+                    <td></td>
                 </tr>
             </tbody>
         </table>
